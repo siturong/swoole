@@ -1,1 +1,10 @@
-examples/persist-data
+examples/03-nginx/persist-data/
+
+examples/03-nginx/source/vendor/
+
+examples/03-nginx/source/.editorconfig
+
+examples/03-nginx/source/.gitattributes
+
+*/sites/*/files
+*/sites/*/private
