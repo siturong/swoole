@@ -6,6 +6,8 @@
 var Vm = new Vue({
   el: "#root",
   data: {
+    apiKey: '123456a',
+    serverSid: '',
     consoleData: [], // 控制台日志
     messageData: [], // 消息记录
     instance: WebSocket, // ws instance
@@ -185,7 +187,8 @@ var Vm = new Vue({
         data = _this.content
       }
       try {
-        _this.instance.send(data);
+        var objData = {content:data, apiKey: _this.apiKey};
+        _this.instance.send(JSON.stringify(objData));
         _this.writeNews(1, data);
         if (_this.sendClean && typeof raw === 'object') _this.content = '';
       } catch (err) {

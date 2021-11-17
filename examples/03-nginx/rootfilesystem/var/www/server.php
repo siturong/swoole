@@ -53,7 +53,15 @@ $server->on('start', function ($server) {
 });
 
 $server->on('open', function($server, $req) {
-  echo "connection open: {$req->fd}\n";
+  $redis1 = new Swoole\Coroutine\Redis();
+  $redis1->connect('03-nginx_redis_1', 6379);
+
+  $redis1->RPUSH('log', json_encode($req->fd));
+  $redis1->RPUSH('log', json_encode($req->header));
+
+  $redis1->RPUSH('client_on', $req->fd);
+
+    echo "connection open: {$req->fd}\n";
 });
 
 $server->on('message', function($server, $frame) {
@@ -73,12 +81,19 @@ $server->on('message', function($server, $frame) {
   }
 
   $arr['data'] = $content;
-  $redis1->LPUSH('sid_' . $frame->fd,  json_encode($arr));
+  $redis1->RPUSH('sid_' . $frame->fd,  json_encode($arr));
+
   $server->push($fd, $frame->fd . '|' . $content);
 
 });
 
 $server->on('close', function($server, $fd) {
+  $redis1 = new Swoole\Coroutine\Redis();
+  $redis1->connect('03-nginx_redis_1', 6379);
+  //删除名称为key的list中值为value的元素
+  $redis1->lRem('client_on', $fd, 0);
+
+
   echo "connection close: {$fd}\n";
 });
 

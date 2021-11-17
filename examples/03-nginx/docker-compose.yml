@@ -1,5 +1,6 @@
 version: '3'
 
+## 9501 暂时没用
 services:
   nginx:
     image: nginx
@@ -46,7 +47,7 @@ services:
       - ./persist-data/db-data:/var/lib/mysql
   app:
     image: 03-nginx_app
-    #build: .
+    #build: .    ## 会执行当前目录下的 Dockerfile
     volumes:
       - ./rootfilesystem/var/www:/var/www
     ports:
