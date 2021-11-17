@@ -1,0 +1,13 @@
+<?php
+
+function test() {
+  $record_keep_table = 'cd_editors_made';
+  $schema = [
+    'fields' => [
+      'id' => ['type' => 'serial', 'not null' => TRUE],
+      'email' => ['type' => 'varchar', 'length' => 255, 'not null' => TRUE],
+    ],
+    'primary key' => ['id'],
+  ];
+  \Drupal::database()->schema()->createTable( $record_keep_table, $schema);
+}
